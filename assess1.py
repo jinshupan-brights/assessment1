@@ -11,12 +11,20 @@ def connect_db():
     return assessment_db_connect
 
 
-def fetch_db_data(a):
+def fetch_db_data():
     cursor = connect_db().cursor()
-    cursor.execute(f"SELECT * FROM assessment1_7;")
+    cursor.execute(f"SELECT * FROM contacts;")
     db_data = cursor.fetchall()
     cursor.close()
     return db_data
+
+
+def insert_db_data(f_name, l_name):
+    cursor = connect_db().cursor()
+    cursor.execute(f"INSERT INTO contacts (first_name, last_name, title, organization) VALUES ('{f_name}','{l_name}', null, null);")
+    cursor.execute("COMMIT;")
+    cursor.close()
+    print(f"{f_name},{l_name} has been inserted into the database! ")
 
 
 def disconnect():
@@ -37,14 +45,16 @@ while connected_to_db:
     available commands are [list], [insert], [delete], and [quit]: ''').lower().strip()
 
     if a == "list":
-        db_data_list = fetch_db_data(connect_db)
+        db_data_list = fetch_db_data()
         for row in db_data_list:
-            print(row[0] + "\t" + row[1] + "\t" + row[2] + "\t" + row[3])
+            print(str(row[0]) + "\t" + str(row[1]) + "\t" + str(row[2]) + "\t" + str(row[3]) + "\t" + str(row[4]))
     elif a == "quit":
         disconnect()
         connected_to_db = False
     elif a == "insert":
-        pass
+        f_name = input("please enter the first name: ").capitalize().strip()
+        l_name = input("please enter the last name: ").capitalize().strip()
+        insert_db_data(f_name, l_name)
     elif a == "delete":
         pass
     
