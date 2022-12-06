@@ -27,9 +27,17 @@ def insert_db_data(f_name, l_name):
     print(f"{f_name},{l_name} has been inserted into the database! ")
 
 
+def delete_db_data(l_name):
+    cursor = connect_db().cursor()
+    cursor.execute(f"DELETE FROM contacts WHERE last_name = '{l_name}';")
+    cursor.close()
+    print(f"The contact {l_name} has been removed! ")
+
+
 def disconnect():
     connect_db().close()
     print("Disconnected from the database. Good bye!")
+
 
 connect_db()
 print('''Welcome to the assessment database!
@@ -49,12 +57,13 @@ while connected_to_db:
         for row in db_data_list:
             print(str(row[0]) + "\t" + str(row[1]) + "\t" + str(row[2]) + "\t" + str(row[3]) + "\t" + str(row[4]))
     elif a == "quit":
-        disconnect()
+        connect_db().cursor().execute("COMMIT;") # commits all changes before quitting
+        disconnect() 
         connected_to_db = False
     elif a == "insert":
         f_name = input("please enter the first name: ").capitalize().strip()
         l_name = input("please enter the last name: ").capitalize().strip()
         insert_db_data(f_name, l_name)
     elif a == "delete":
-        pass
-    
+        l_name = input("please enter the contact's last name: ").capitalize().strip()
+        delete_db_data(l_name)
