@@ -24,13 +24,18 @@ def disconnect():
     print("Disconnected from the database. Good bye!")
 
 connect_db()
-print('''Welcome to the assessment database!\n
+print('''Welcome to the assessment database!
 Type [list] to list all data.
-Or type [quit] to exit the databse''')
+Type [insert] to add new entry to the database.
+Type [delete] to remove an entry from the database.
+Or type [quit] to exit the databse..
+''')
 
 connected_to_db = True
 while connected_to_db:
-    a = input("Please enter your command: ").lower().strip()
+    a = input('''Please enter your command - 
+    available commands are [list], [insert], [delete], and [quit]: ''').lower().strip()
+
     if a == "list":
         db_data_list = fetch_db_data(connect_db)
         for row in db_data_list:
@@ -38,4 +43,8 @@ while connected_to_db:
     elif a == "quit":
         disconnect()
         connected_to_db = False
+    elif a == "insert":
+        pass
+    elif a == "delete":
+        pass
     
